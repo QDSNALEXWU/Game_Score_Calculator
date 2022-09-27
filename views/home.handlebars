@@ -1,0 +1,85 @@
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <a class="navbar-brand" href="#">比赛成绩录入系统</a>
+  <form method="POST" action="/addResult" style="width: 60%;">
+    <div class="container"> 
+        <div class="row">
+            <div class="col-md">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">胜者</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01" required name="win">
+                        <option></option>
+                        {{#each data}}
+                            <option value="{{this.name}},{{this.score}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">败者</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01" name="lose" required>
+                        <option></option>
+                        {{#each data}}
+                            <option value="{{this.name}},{{this.score}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm">
+                <button type="submit" class="btn btn-outline-primary">输入结果</button>
+            </div>
+        </div>
+    </div>
+</form>
+</nav>
+
+<form method="POST" action="/addUser">
+    <div class="input-group mb-3 mt-3">
+        <input type="text" class="form-control" placeholder="选手姓名" aria-describedby="basic-addon2" name="username" required autofocus>
+        <input type="number" class="form-control" placeholder="初始积分" aria-label="Recipient's username" aria-describedby="basic-addon2" name="score" required autofocus>
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="submit">添加选手</button>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">姓名</th>
+      <th scope="col">积分</th>
+      <th scope="col">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each data}}
+      <tr>
+      <th scope="row">{{inc @index}}</th>
+      <td>{{this.name}}</td>
+      <td>{{this.score}}</td>
+      <td>
+          <button type="button"
+            onclick="deleteUser({{json this.name}})"
+            class="btn btn-danger">
+           删除
+          </button>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<script type="text/javascript">
+
+function deleteUser(name) {
+  fetch('/delUser/' + name, {method: 'POST'}).then(response => location.reload())
+}
+
+
+</script>
